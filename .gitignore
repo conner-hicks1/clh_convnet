@@ -5,6 +5,7 @@
 
 bin/
 CMakeFiles/
+cifar-100-binary/
 
 *.cmake
 

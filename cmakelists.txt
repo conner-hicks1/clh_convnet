@@ -4,6 +4,15 @@ project (ConvNet)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/$<CONFIG>)
 
+set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
+
+set(INCLUDE_DIRS "${EXTERNAL_DIR}/glfw/include")
+set(LINK_DIRS "${EXTERNAL_DIR}/glfw/build/src")
+
+include_directories(${INCLUDE_DIRS})
+link_directories(${LINK_DIRS})
+
+set(LIBS "glfw3" "opengl32")
+
 add_executable (ConvNet src/ConvNet.cpp)
-
-
+target_link_libraries(ConvNet ${LIBS})
