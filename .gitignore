@@ -1,0 +1,12 @@
+*.un~
+*.txt~
+*.cpp~
+*.swp
+
+bin/
+CMakeFiles/
+
+*.cmake
+
+CMakeCache.txt
+Makefile
