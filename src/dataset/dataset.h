@@ -16,7 +16,7 @@ Dataset* create_dataset(const char* file_name, uint32_t image_width, uint32_t im
 
 void get_dataset_image_size(Dataset* dataset, uint32_t* image_width, uint32_t* image_height, uint32_t* image_size);
 
-// Inclusive
+// Exclusive
 uint8_t* read_dataset_bytes(Dataset* dataset, uint32_t start, uint32_t end);
 
 uint8_t* get_dataset_texture_array(Dataset* dataset, uint32_t index);

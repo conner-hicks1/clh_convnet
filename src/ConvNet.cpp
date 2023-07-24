@@ -15,6 +15,14 @@ void glfw_error_callback(int error, const char* description) {
 	std::cout << description << std::endl;
 }
 
+void show_dataset_image(uint8_t* dataset_texture_array, Dataset* dataset, GLuint dataset_texture_handle, uint32_t dataset_image_index)
+{
+	dataset_texture_array = get_dataset_texture_array(dataset, dataset_image_index);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, dataset->image_width, dataset->image_height, 0, GL_RGB, GL_UNSIGNED_BYTE, dataset_texture_array);
+	glGenerateMipmap(GL_TEXTURE_2D);
+}
+
 int main() {
 	
 	std::cout << std::filesystem::current_path();
@@ -57,14 +65,26 @@ int main() {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 	
-	Dataset* dataset = create_dataset("C:/dev/c++/convnet/src/dataset/test.bin", 32, 32, 3);
+	Dataset* dataset = create_dataset("C:/dev/c++/convnet/data/cifar-100-binary/train.bin", 32, 32, 3);
 	
 	uint32_t image_width, image_height, image_size = 0;
 	get_dataset_image_size(dataset, &image_width, &image_height, &image_size);
 
 	std::cout << "Width: " << image_width << ", Height: " << image_height << ", Size: " << image_size << std::endl;
 	
-	uint8_t* dataset_texture_array = get_dataset_texture_array(dataset, 0);
+	uint8_t* dataset_texture_array = get_dataset_texture_array(dataset, 10);
+	
+	GLuint dataset_texture_handle;
+	glGenTextures(1, &dataset_texture_handle);
+	glBindTexture(GL_TEXTURE_2D, dataset_texture_handle);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image_width, image_height, 0, GL_RGB, GL_UNSIGNED_BYTE, dataset_texture_array);
+	
+	show_dataset_image(dataset_texture_array, dataset, dataset_texture_handle, 10);
+	glGenerateMipmap(GL_TEXTURE_2D);
 	
 	while(!glfwWindowShouldClose(window))
 	{
@@ -76,9 +96,17 @@ int main() {
 		ImGui::NewFrame();
 		ImGui::ShowDemoWindow();
 		
-		ImGui::Begin("OpenGL Texture Text");
-		//ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
+		ImGui::Begin("Select Image");
+		int dataset_image_index = 0;
+		ImGui::SliderInt("Image Index", &dataset_image_index, 0, 50000);
+		show_dataset_image(dataset_texture_array, dataset, dataset_texture_handle, dataset_image_index);
 		ImGui::End();
+		
+		ImGui::Begin("Dataset Image");
+		ImGui::Image((void*)(intptr_t)dataset_texture_handle, ImVec2(image_width * 16, image_height * 16));
+		ImGui::End();
+		
+		
 		
 		ImGui::Render();
 		
