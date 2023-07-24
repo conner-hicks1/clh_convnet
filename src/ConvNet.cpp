@@ -6,14 +6,18 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <filesystem>
+
+#include "dataset.h"
+
 void glfw_error_callback(int error, const char* description) {
 	std::cout << error << std::endl;
 	std::cout << description << std::endl;
 }
 
-
-
 int main() {
+	
+	std::cout << std::filesystem::current_path();
 	
 	glfwSetErrorCallback(glfw_error_callback);
 	if (!glfwInit())
@@ -52,7 +56,16 @@ int main() {
 	
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
+	
+	Dataset* dataset = create_dataset("C:/dev/c++/convnet/src/dataset/test.bin", 32, 32, 3);
+	
+	uint32_t image_width, image_height, image_size = 0;
+	get_dataset_image_size(dataset, &image_width, &image_height, &image_size);
 
+	std::cout << "Width: " << image_width << ", Height: " << image_height << ", Size: " << image_size << std::endl;
+	
+	uint8_t* dataset_texture_array = get_dataset_texture_array(dataset, 0);
+	
 	while(!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
@@ -64,7 +77,7 @@ int main() {
 		ImGui::ShowDemoWindow();
 		
 		ImGui::Begin("OpenGL Texture Text");
-		ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
+		//ImGui::Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width, my_image_height));
 		ImGui::End();
 		
 		ImGui::Render();

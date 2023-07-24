@@ -1,0 +1,1 @@
+add_library(dataset OBJECT dataset.cpp)
