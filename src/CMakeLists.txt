@@ -3,15 +3,18 @@ set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/external)
 
 set(INCLUDE_DIRS "${EXTERNAL_DIR}/glad/include" "${EXTERNAL_DIR}/glfw/include" "${EXTERNAL_DIR}/imgui" "${EXTERNAL_DIR}/imgui/backends")
 set(LINK_DIRS "${EXTERNAL_DIR}/glfw/build/src")
-set(SUB_DIRS "dataset")
+set(SUB_DIRS "dataset" "neural_net")
 
 include_directories(${INCLUDE_DIRS} ${SUB_DIRS})
 link_directories(${LINK_DIRS})
 
 set(LIBS "glfw3" "opengl32")
-set(SUB_SRCS "dataset")
+set(SUB_SRCS "dataset" "neural_net" "layer")
 
-add_subdirectory(${SUB_DIRS})
+foreach(SUB_DIR ${SUB_DIRS})
+	add_subdirectory(${SUB_DIR})
+endforeach()
+
 add_executable(ConvNet "ConvNet.cpp")
 
 set(TARGET_SRCS "imgui.cpp" "imgui_demo.cpp" "imgui_draw.cpp" "imgui_tables.cpp" "imgui_widgets.cpp")

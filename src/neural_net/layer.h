@@ -1,0 +1,16 @@
+#pragma once
+
+typedef enum
+{
+	CONVOLUTION = 0,
+	CONVOLUTION_ACTIVATION,
+	POOLING,
+	FLATTENING,
+	FULLY_CONNECTED,
+	FULLY_CONNECTED_ACTIVATION
+} LAYER_TYPE;
+
+class Layer {
+public:
+	LAYER_TYPE layer_type;
+}

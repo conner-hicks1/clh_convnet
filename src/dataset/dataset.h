@@ -1,8 +1,9 @@
 #pragma once
 #include <stdint.h>
 
-typedef struct
+class Dataset
 {
+public:
 	uint32_t image_width;
 	uint32_t image_height;
 	uint32_t image_pixel_size;
@@ -10,7 +11,7 @@ typedef struct
 	uint32_t image_byte_size;
 	uint32_t channel_size;
 	const char* file_path;
-} Dataset;
+};
 
 Dataset* create_dataset(const char* file_name, uint32_t image_width, uint32_t image_height, uint8_t ncolor_channels);
 

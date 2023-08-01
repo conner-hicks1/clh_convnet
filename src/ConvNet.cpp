@@ -98,7 +98,7 @@ int main() {
 		
 		ImGui::Begin("Select Image");
 		int dataset_image_index = 0;
-		ImGui::SliderInt("Image Index", &dataset_image_index, 0, 50000);
+		ImGui::SliderInt("Image Index", &dataset_image_index, 0, 49999);
 		show_dataset_image(dataset_texture_array, dataset, dataset_texture_handle, dataset_image_index);
 		ImGui::End();
 		
